@@ -1,0 +1,17 @@
+
+version: "3.9"
+services:
+  playout:
+    build: ./playout
+    container_name: fast_playout
+    ports:
+      - "8080:8080"   # dashboard + API
+    volumes:
+      - ./media:/app/media
+      - ./configs:/app/configs
+      - ./out:/app/out
+      - ./web/static:/app/web/static
+    environment:
+      - TZ=UTC
+      - LOG_LEVEL=INFO
+    command: ["python", "-m", "app.main"]

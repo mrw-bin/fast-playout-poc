@@ -1,0 +1,45 @@
+
+# Channel configuration
+mode: vod   # vod | live
+channel_id: "demo_channel"
+channel_name: "FAST Demo Channel"
+
+audio_loudness_lufs: -23
+
+ihls:
+  segment_duration: 6
+  variants:
+    - {name: "360p",  width: 640,  height: 360,  v_bitrate: "900k",  a_bitrate: "96k"}
+    - {name: "540p",  width: 960,  height: 540,  v_bitrate: "1600k", a_bitrate: "96k"}
+    - {name: "720p",  width: 1280, height: 720,  v_bitrate: "3500k", a_bitrate: "128k"}
+    - {name: "1080p", width: 1920, height: 1080, v_bitrate: "6500k", a_bitrate: "192k"}
+
+vod:
+  playlist:
+    - file: "media/sample_01.mp4"
+      title: "Sample Show"
+      duration: 600   # seconds
+      vtt: "media/sample_01.vtt"   # optional
+    - file: "media/sample_02.mp4"
+      title: "Sample Show 2"
+      duration: 600
+      vtt: null
+
+live:
+  input: ""   # e.g. https://example.com/live/index.m3u8 or srt://... or rtmp://...
+
+ads:
+  minutes_per_hour: 8     # Samsung guidance
+  min_pod: 60             # min pod length (sec)
+  max_pod: 120            # max pod length (sec)
+  inject_binary_ts: false # set true to run TSDuck post-process
+
+output:
+  hls_dir: "out/hls"
+  vtt_dir: "out/vtt"
+  master_name: "index.m3u8"
+  playlist_basename: "variant"
+
+ssai:
+  samsung_mode: true  # produce tags Samsung expects
+

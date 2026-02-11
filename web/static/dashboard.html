@@ -1,0 +1,49 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>FAST Playout Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    body{font-family: system-ui, Arial; margin: 2rem;}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+    pre{background:#f6f8fa;padding:1rem;border-radius:8px;overflow:auto}
+    h2{margin-top:0}
+    .badge{background:#0366d6;color:#fff;padding:2px 6px;border-radius:4px}
+  </style>
+</head>
+<body>
+  <h1>FAST Playout Dashboard <span class="badge" id="mode"></span></h1>
+  <div class="grid">
+    <div>
+      <h2>Now Playing</h2>
+      <pre id="now"></pre>
+    </div>
+    <div>
+      <h2>Upcoming (next 30 min)</h2>
+      <pre id="upcoming"></pre>
+    </div>
+    <div>
+      <h2>Ad Breaks (next 15 min)</h2>
+      <pre id="breaks"></pre>
+    </div>
+    <div>
+      <h2>HLS Stats</h2>
+      <pre id="hls"></pre>
+    </div>
+  </div>
+  <script>
+    async function load(){
+      const s = await fetch('/api/status').then(r=>r.json());
+      document.getElementById('mode').innerText = s.mode.toUpperCase();
+      document.getElementById('now').innerText = JSON.stringify(s.now_playing, null, 2);
+      document.getElementById('upcoming').innerText = JSON.stringify(s.upcoming, null, 2);
+      document.getElementById('breaks').innerText = JSON.stringify(s.breaks.next, null, 2);
+      document.getElementById('hls').innerText = JSON.stringify(s.hls, null, 2);
+    }
+    setInterval(load, 2000);
+    load();
+  </script>
+</body>
+</html>
